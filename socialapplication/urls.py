@@ -16,10 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from api import views
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.routers import DefaultRouter
 router=DefaultRouter()
+from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
+
+
+router.register("api/v2/posts",views.PostModelView,basename="mposts")
 router.register("posts",views.PostsView,basename="posts")
+router.register("accounts/signup",views.UserView,basename="users")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('token',TokenObtainPairView.as_view()),
+    path("token/refresh",TokenRefreshView.as_view())
 ]+router.urls
